@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Jeff Tratner - tooling</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">Jeff Tratner</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+	
+                    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+            
+            
+
+                            <article>
+                <a href="/posts/make-using-virtualenvs-dead-simple"><h3 class="article-title">Make using virtualenvs dead-simple</h3></a>
+                <h6 class="subheader" title="2013-07-05T18:00:00">Fri 05 July 2013
+    </h6>
+
+
+<p><strong>tl;dr</strong> - grab files from <a href="https://gist.github.com/jtratner/5934189">this gist</a> and follow the instructions in
+<code>README.md</code></p>
+<p><code>virtualenv</code> (and, particularly, <code>virtualenvwrapper</code>), are really great when
+you want to use specific versions of libraries or make changes to an existing
+library without borking other versions of the files. That said, it adds a level
+of indirection. I set up my dotfiles to allow me to switch virtualenvs without
+a lot of typing. Ultimately, this will let you type just <code>p &lt;projectname&gt;</code> to
+change to the directory and workon the appropriate virtualenv.</p>
+<p>First, I grabbed <a href="http://hmarr.com/2010/jan/19/making-virtualenv-play-nice-with-git/">Harry Marr's <code>workon_cwd</code> command</a>
+which detects which <code>virtualenv</code> to use with a combination of <code>git</code> or a file
+called <code>.venv</code> in your base directory. I didn't want to overwrite <code>cd</code>, so
+instead, I aliased a command to handle the workon script (assuming you've
+already created an alias like <code>export PYTHONPROJECTS=$HOME/projects/python</code>:</p>
+<div class="highlight"><pre>venv_cd <span class="nv">$PYTHONPROJECTS</span>/<span class="nv">$1</span>;
+</pre></div>
+
+
+<p>Plus add a completion script (<code>_files</code> is a preexisting completion function
+that just tells <code>zsh</code> to search for files in that directory):</p>
+<div class="highlight"><pre><span class="cp">#compdef p</span>
+<span class="n">_files</span> <span class="o">-</span><span class="n">W</span> <span class="err">$</span><span class="n">PYTHONPROJECTS</span> <span class="o">-/</span>
+</pre></div>
+
+
+<p>Now you can use <code>p</code> to change to a python project (potentially including
+subdirectories as well) with tab completion and other exciting properties.</p>
+<p>I have the full list of files with instructions in <a href="https://gist.github.com/jtratner/5934189">this gist</a></p><p class="subheader">Category: <a href="/category/python">Python</a>
+
+    Tagged: 
+        <a href="/tag/tooling">tooling </a>
+        <a href="/tag/python">Python </a>
+        <a href="/tag/virtualenv">virtualenv </a>
+        <a href="/tag/zsh">zsh </a>
+    </p>
+
+
+
+            </article>
+
+                            <div class="pagination-centered">
+<h6 class="subheader">Page 1 of 1</h6>
+
+<p>
+    
+    </p>
+</div>
+            
+            
+                
+                    <!-- /#posts-list -->
+                        
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+                                </ul>
+
+        		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+                    <li><a href="/category/python">Python</a></li>
+           
+        </ul>
+        
+        		
+        
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>Jeff Tratner by Jeff Tratner</p>
+            </div>
+            </div>
+    </div>
+</footer>

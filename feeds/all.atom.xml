@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Jeff Tratner</title><link href="/" rel="alternate"></link><link href="/feeds/all.atom.xml" rel="self"></link><id>/</id><updated>2013-07-07T20:52:00+02:00</updated><entry><title>Opting in to KeyboardInterrupt in Cython</title><link href="/posts/opting-in-to-keyboardinterrupt-in-cython" rel="alternate"></link><updated>2013-07-07T20:52:00+02:00</updated><author><name>Jeff Tratner</name></author><id>tag:,2013-07-07:posts/opting-in-to-keyboardinterrupt-in-cython</id><summary type="html">&lt;p&gt;One side-effect of using Cython is that code won't stop when you try to stop it
+with &lt;code&gt;^C&lt;/code&gt; (because it ignores &lt;code&gt;KeyboardInterrupt&lt;/code&gt;). Simple to handle, but it
+took me a while to figure out just the right commands. You just need to use
+&lt;code&gt;PyErr_CheckSignals&lt;/code&gt; from &lt;code&gt;cpython.exc&lt;/code&gt;. You either want to wrap in &lt;code&gt;try/except&lt;/code&gt;
+clause or put it outside of wherever you want to handle your loop. It also
+doesn't call the GIL so it's safe to call.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;cpython.exc&lt;/span&gt; &lt;span class="k"&gt;cimport&lt;/span&gt; &lt;span class="n"&gt;PyErr_CheckSignals&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This adds very little overhead. If you compare two functions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;cpdef&lt;/span&gt; &lt;span class="nf"&gt;raise_on_error&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt; &lt;span class="n"&gt;PyErr_CheckSignals&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="k"&gt;cpdef&lt;/span&gt; &lt;span class="nf"&gt;reference&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt; &lt;span class="k"&gt;pass&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You see a &lt;em&gt;very&lt;/em&gt; small overhead for calling &lt;code&gt;PyErr_CheckSignal&lt;/code&gt;. &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;check_signal&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="mi"&gt;10000000&lt;/span&gt; &lt;span class="n"&gt;loops&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;best&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;72.8&lt;/span&gt; &lt;span class="n"&gt;ns&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt;
+
+&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;reference&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;span class="mi"&gt;10000000&lt;/span&gt; &lt;span class="n"&gt;loops&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;best&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;67.6&lt;/span&gt; &lt;span class="n"&gt;ns&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;</summary><category term="Cython"></category><category term="Python"></category></entry><entry><title>Make using virtualenvs dead-simple</title><link href="/posts/make-using-virtualenvs-dead-simple" rel="alternate"></link><updated>2013-07-05T18:00:00+02:00</updated><author><name>Jeff Tratner</name></author><id>tag:,2013-07-05:posts/make-using-virtualenvs-dead-simple</id><summary type="html">&lt;p&gt;&lt;strong&gt;tl;dr&lt;/strong&gt; - grab files from &lt;a href="https://gist.github.com/jtratner/5934189"&gt;this gist&lt;/a&gt; and follow the instructions in
+&lt;code&gt;README.md&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;virtualenv&lt;/code&gt; (and, particularly, &lt;code&gt;virtualenvwrapper&lt;/code&gt;), are really great when
+you want to use specific versions of libraries or make changes to an existing
+library without borking other versions of the files. That said, it adds a level
+of indirection. I set up my dotfiles to allow me to switch virtualenvs without
+a lot of typing. Ultimately, this will let you type just &lt;code&gt;p &amp;lt;projectname&amp;gt;&lt;/code&gt; to
+change to the directory and workon the appropriate virtualenv.&lt;/p&gt;
+&lt;p&gt;First, I grabbed &lt;a href="http://hmarr.com/2010/jan/19/making-virtualenv-play-nice-with-git/"&gt;Harry Marr's &lt;code&gt;workon_cwd&lt;/code&gt; command&lt;/a&gt;
+which detects which &lt;code&gt;virtualenv&lt;/code&gt; to use with a combination of &lt;code&gt;git&lt;/code&gt; or a file
+called &lt;code&gt;.venv&lt;/code&gt; in your base directory. I didn't want to overwrite &lt;code&gt;cd&lt;/code&gt;, so
+instead, I aliased a command to handle the workon script (assuming you've
+already created an alias like &lt;code&gt;export PYTHONPROJECTS=$HOME/projects/python&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;venv_cd &lt;span class="nv"&gt;$PYTHONPROJECTS&lt;/span&gt;/&lt;span class="nv"&gt;$1&lt;/span&gt;;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Plus add a completion script (&lt;code&gt;_files&lt;/code&gt; is a preexisting completion function
+that just tells &lt;code&gt;zsh&lt;/code&gt; to search for files in that directory):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;#compdef p&lt;/span&gt;
+&lt;span class="n"&gt;_files&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;W&lt;/span&gt; &lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;PYTHONPROJECTS&lt;/span&gt; &lt;span class="o"&gt;-/&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now you can use &lt;code&gt;p&lt;/code&gt; to change to a python project (potentially including
+subdirectories as well) with tab completion and other exciting properties.&lt;/p&gt;
+&lt;p&gt;I have the full list of files with instructions in &lt;a href="https://gist.github.com/jtratner/5934189"&gt;this gist&lt;/a&gt;&lt;/p&gt;</summary><category term="tooling"></category><category term="Python"></category><category term="virtualenv"></category><category term="zsh"></category></entry></feed>
