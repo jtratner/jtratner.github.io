@@ -1,163 +1,138 @@
 <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:og="http://ogp.me/ns#"
+      xmlns:fb="https://www.facebook.com/2008/fbml">
 <head>
-    <meta charset="utf-8" />
-    <!-- Set the viewport width to device width for mobile -->
-    <meta name="viewport" content="width=device-width" />
-
     <title>Jeff Tratner</title>
+    <!-- Using the latest rendering mode for IE -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="/theme/css/normalize.css" />
-    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
-    <link rel="stylesheet" href="/theme/css/style.css" />
-    <link rel="stylesheet" href="/theme/css/pygments.css" />	
-    <script src="/theme/js/custom.modernizr.js"></script>
+    <!-- Open Graph tags -->
+
+            <meta property="og:type" content="website"/>
+            <meta property="og:title" content="Jeff Tratner"/>
+            <meta property="og:url" content="."/>
+            <meta property="og:description" content="Jeff Tratner"/>
+
+    <!-- Bootstrap -->
+        <link rel="stylesheet" href="./theme/css/bootstrap.cosmo.min.css" type="text/css"/>
+    <link href="./theme/css/font-awesome.min.css" rel="stylesheet">
+    <link href="./theme/css/pygments.css" rel="stylesheet">
+    <link rel="stylesheet" href="./theme/css/style.css" type="text/css"/>
+    <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+
+        <link href="./feeds/all.atom.xml" type="application/atom+xml" rel="alternate"
+              title="Jeff Tratner ATOM Feed"/>
+
 </head>
-
 <body>
-
-<!-- Nav Bar -->
-<nav>
-<div class="top-bar">
-<div class="row">
-    <div class="large-9 large-centered columns">
-	    <h1><a href="">Jeff Tratner</a></h1>
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="." class="navbar-brand">Jeff Tratner</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                        <li >
+                            <a href="./category/python">Python</a>
+                        </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="./archives.html"><i class="icon-th-list"></i>Archives</a></li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
     </div>
-</div>
-</div>
-
-<!-- Show menu items and pages -->
-<div class="row">
-<div class="large-9 columns">
-    <ul class="button-group navigation">
-	
-                    </ul>
-</div>
-</div>
 </nav>
-<!-- End Nav -->
-
-
-<!-- Main Page Content and Sidebar -->
-<div class="row">
-
-    <!-- Main Blog Content -->
-    <div class="large-9 columns">
-            
-            
-
-                            <article>
-                <a href="/posts/opting-in-to-keyboardinterrupt-in-cython"><h3 class="article-title">Opting in to KeyboardInterrupt in Cython</h3></a>
-                <h6 class="subheader" title="2013-07-07T20:52:00">Sun 07 July 2013
-    </h6>
-
-
-<p>One side-effect of using Cython is that code won't stop when you try to stop it
+<!-- /.navbar -->
+<div class="container">
+    <div class="row">
+        <div class="col-lg-9">
+            <article>
+                <h2><a href="./posts/opting-in-to-keyboardinterrupt-in-cython">Opting in to KeyboardInterrupt in Cython</a></h2>
+                <div class="summary"><p>One side-effect of using Cython is that code won't stop when you try to stop it
 with <code>^C</code> (because it ignores <code>KeyboardInterrupt</code>). Simple to handle, but it
 took me a while to figure out just the right commands. You just need to use
-<code>PyErr_CheckSignals</code> from <code>cpython.exc</code>. You either want to wrap in <code>try/except</code>
-clause or put it outside of wherever you want to handle your loop. It also
-doesn't call the GIL so it's safe to call.</p>
-<div class="highlight"><pre><span class="k">from</span> <span class="nn">cpython.exc</span> <span class="k">cimport</span> <span class="n">PyErr_CheckSignals</span>
-</pre></div>
-
-
-<p>This adds very little overhead. If you compare two functions:</p>
-<div class="highlight"><pre><span class="k">cpdef</span> <span class="nf">raise_on_error</span><span class="p">():</span> <span class="n">PyErr_CheckSignals</span><span class="p">()</span>
-<span class="k">cpdef</span> <span class="nf">reference</span><span class="p">():</span> <span class="k">pass</span>
-</pre></div>
-
-
-<p>You see a <em>very</em> small overhead for calling <code>PyErr_CheckSignal</code>. </p>
-<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">check_signal</span><span class="p">()</span>
-<span class="mi">10000000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="o">:</span> <span class="mf">72.8</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span>
-
-<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">reference</span><span class="p">()</span>
-<span class="mi">10000000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="o">:</span> <span class="mf">67.6</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span>
-</pre></div><p class="subheader">Category: <a href="/category/python">Python</a>
-
-    Tagged: 
-        <a href="/tag/cython">Cython </a>
-        <a href="/tag/python">Python </a>
-    </p>
-
-
-
+<code>PyErr_CheckSignals</code> from <code>cpython.exc</code>. You either ...</p>
+                    <a class="btn btn-default btn-xs" href="./posts/opting-in-to-keyboardinterrupt-in-cython">more ...</a>
+                </div>
             </article>
-
-            
-                            <hr  class="gradient"/>
-            
-                
-                    
-
-                
+            <hr/>
             <article>
-                <a href="/posts/make-using-virtualenvs-dead-simple"><h3 class="article-title">Make using virtualenvs dead-simple</h3></a>
-                <h6 class="subheader" title="2013-07-05T18:00:00">Fri 05 July 2013
-    </h6>
-
-
-<p><strong>tl;dr</strong> - grab files from <a href="https://gist.github.com/jtratner/5934189">this gist</a> and follow the instructions in
+                <h2><a href="./posts/make-using-virtualenvs-dead-simple">Make using virtualenvs dead-simple</a></h2>
+                <div class="summary"><p><strong>tl;dr</strong> - grab files from <a href="https://gist.github.com/jtratner/5934189">this gist</a> and follow the instructions in
 <code>README.md</code></p>
 <p><code>virtualenv</code> (and, particularly, <code>virtualenvwrapper</code>), are really great when
 you want to use specific versions of libraries or make changes to an existing
-library without borking other versions of the files. That said, it adds a level ...</p><p class="subheader">Category: <a href="/category/python">Python</a>
-
-    Tagged: 
-        <a href="/tag/tooling">tooling </a>
-        <a href="/tag/python">Python </a>
-        <a href="/tag/virtualenv">virtualenv </a>
-        <a href="/tag/zsh">zsh </a>
-    </p>
-
-
-
-                <a class="button radius secondary small right" href="/posts/make-using-virtualenvs-dead-simple">Read More</a>
-                <hr  class="gradient"/>
+library without borking other versions of the files. That said, it adds a level ...</p>
+                    <a class="btn btn-default btn-xs" href="./posts/make-using-virtualenvs-dead-simple">more ...</a>
+                </div>
             </article>
-        
-                    <!-- /#posts-list -->
-                            <div class="pagination-centered">
-<h6 class="subheader">Page 1 of 1</h6>
+            <hr/>
 
-<p>
-    
-    </p>
-</div>
-                        
-    </div>
-    <!-- End Main Content -->
+        </div>
+        <div class="col-lg-3 well well-sm" id="sidebar">
+<aside>
+    <section>
+        <ul class="list-group list-group-flush">
+                <li class="list-group-item"><h4><i class="icon-home icon-large"></i>Social</h4></li>
+                    <li class="list-group-item"><a href="http://www.jeffreytratner.com"><i
+                            class="icon-More about Jeff-sign icon-large"></i>More about Jeff
+                    </a></li>
+                    <li class="list-group-item"><a href="http://www.github.com/jtratner"><i
+                            class="icon-@jtratner on Github-sign icon-large"></i>@jtratner on Github
+                    </a></li>
+                    <li class="list-group-item"><a href="http://www.twitter.com/jtratner"><i
+                            class="icon-@jtratner on Twitter-sign icon-large"></i>@jtratner on Twitter
+                    </a></li>
 
-    <!-- Sidebar -->
-    <aside class="large-3 columns">
-        <h5 class="sidebar-title">Site</h5>
-        <ul class="side-nav">
-            <li><a href="/archives.html">Archives</a>
-            <li><a href="/tags.html">Tags</a>
-                                </ul>
 
-        		
-        <h5 class="sidebar-title">Categories</h5>
-        <ul class="side-nav">
-                    <li><a href="/category/python">Python</a></li>
-           
+
+            <li class="list-group-item"><a href="./tags.html"><h4><i class="icon-tags icon-large"></i>Tags</h4></a></li>
+                <li class="list-group-item tag-1">
+                    <a href="./tag/python">
+                        Python
+                    </a>
+                </li>
+                <li class="list-group-item tag-4">
+                    <a href="./tag/tooling">
+                        tooling
+                    </a>
+                </li>
+                <li class="list-group-item tag-4">
+                    <a href="./tag/cython">
+                        Cython
+                    </a>
+                </li>
+                <li class="list-group-item tag-4">
+                    <a href="./tag/zsh">
+                        zsh
+                    </a>
+                </li>
+                <li class="list-group-item tag-4">
+                    <a href="./tag/virtualenv">
+                        virtualenv
+                    </a>
+                </li>
         </ul>
-        
-        		
-        
-    </aside> <!-- End Sidebar -->
-
-</div> <!-- End Main Content and Sidebar -->
-
-
-<!-- Footer -->
-<footer class="row">
-    <div class="large-12 columns">
-        <hr />
-        <div class="row">
-            <div class="large-6 columns">
-                <p>Jeff Tratner by Jeff Tratner</p>
-            </div>
-            </div>
+    </section>
+</aside>        </div>
     </div>
-</footer>
+</div>
+
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="./theme/js/bootstrap.min.js"></script>
+
+<!-- Enable responsive features in IE8 with Respond.js (https://github.com/scottjehl/Respond) -->
+<script src="./theme/js/respond.min.js"></script>
+</body>
+</html>
