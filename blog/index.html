@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8" />
+    <!-- Set the viewport width to device width for mobile -->
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Jeff Tratner</title>
+
+    <link rel="stylesheet" href="/theme/css/normalize.css" />
+    <link rel="stylesheet" href="/theme/css/foundation.min.css" />
+    <link rel="stylesheet" href="/theme/css/style.css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />	
+    <script src="/theme/js/custom.modernizr.js"></script>
+</head>
+
+<body>
+
+<!-- Nav Bar -->
+<nav>
+<div class="top-bar">
+<div class="row">
+    <div class="large-9 large-centered columns">
+	    <h1><a href="">Jeff Tratner</a></h1>
+    </div>
+</div>
+</div>
+
+<!-- Show menu items and pages -->
+<div class="row">
+<div class="large-9 columns">
+    <ul class="button-group navigation">
+	
+                    </ul>
+</div>
+</div>
+</nav>
+<!-- End Nav -->
+
+
+<!-- Main Page Content and Sidebar -->
+<div class="row">
+
+    <!-- Main Blog Content -->
+    <div class="large-9 columns">
+            
+            
+
+                            <article>
+                <a href="/posts/opting-in-to-keyboardinterrupt-in-cython"><h3 class="article-title">Opting in to KeyboardInterrupt in Cython</h3></a>
+                <h6 class="subheader" title="2013-07-07T20:52:00">Sun 07 July 2013
+    </h6>
+
+
+<p>One side-effect of using Cython is that code won't stop when you try to stop it
+with <code>^C</code> (because it ignores <code>KeyboardInterrupt</code>). Simple to handle, but it
+took me a while to figure out just the right commands. You just need to use
+<code>PyErr_CheckSignals</code> from <code>cpython.exc</code>. You either want to wrap in <code>try/except</code>
+clause or put it outside of wherever you want to handle your loop. It also
+doesn't call the GIL so it's safe to call.</p>
+<div class="highlight"><pre><span class="k">from</span> <span class="nn">cpython.exc</span> <span class="k">cimport</span> <span class="n">PyErr_CheckSignals</span>
+</pre></div>
+
+
+<p>This adds very little overhead. If you compare two functions:</p>
+<div class="highlight"><pre><span class="k">cpdef</span> <span class="nf">raise_on_error</span><span class="p">():</span> <span class="n">PyErr_CheckSignals</span><span class="p">()</span>
+<span class="k">cpdef</span> <span class="nf">reference</span><span class="p">():</span> <span class="k">pass</span>
+</pre></div>
+
+
+<p>You see a <em>very</em> small overhead for calling <code>PyErr_CheckSignal</code>. </p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">check_signal</span><span class="p">()</span>
+<span class="mi">10000000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="o">:</span> <span class="mf">72.8</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">reference</span><span class="p">()</span>
+<span class="mi">10000000</span> <span class="n">loops</span><span class="p">,</span> <span class="n">best</span> <span class="n">of</span> <span class="mi">3</span><span class="o">:</span> <span class="mf">67.6</span> <span class="n">ns</span> <span class="n">per</span> <span class="n">loop</span>
+</pre></div><p class="subheader">Category: <a href="/category/python">Python</a>
+
+    Tagged: 
+        <a href="/tag/cython">Cython </a>
+        <a href="/tag/python">Python </a>
+    </p>
+
+
+
+            </article>
+
+            
+                            <hr  class="gradient"/>
+            
+                
+                    
+
+                
+            <article>
+                <a href="/posts/make-using-virtualenvs-dead-simple"><h3 class="article-title">Make using virtualenvs dead-simple</h3></a>
+                <h6 class="subheader" title="2013-07-05T18:00:00">Fri 05 July 2013
+    </h6>
+
+
+<p><strong>tl;dr</strong> - grab files from <a href="https://gist.github.com/jtratner/5934189">this gist</a> and follow the instructions in
+<code>README.md</code></p>
+<p><code>virtualenv</code> (and, particularly, <code>virtualenvwrapper</code>), are really great when
+you want to use specific versions of libraries or make changes to an existing
+library without borking other versions of the files. That said, it adds a level ...</p><p class="subheader">Category: <a href="/category/python">Python</a>
+
+    Tagged: 
+        <a href="/tag/tooling">tooling </a>
+        <a href="/tag/python">Python </a>
+        <a href="/tag/virtualenv">virtualenv </a>
+        <a href="/tag/zsh">zsh </a>
+    </p>
+
+
+
+                <a class="button radius secondary small right" href="/posts/make-using-virtualenvs-dead-simple">Read More</a>
+                <hr  class="gradient"/>
+            </article>
+        
+                    <!-- /#posts-list -->
+                            <div class="pagination-centered">
+<h6 class="subheader">Page 1 of 1</h6>
+
+<p>
+    
+    </p>
+</div>
+                        
+    </div>
+    <!-- End Main Content -->
+
+    <!-- Sidebar -->
+    <aside class="large-3 columns">
+        <h5 class="sidebar-title">Site</h5>
+        <ul class="side-nav">
+            <li><a href="/archives.html">Archives</a>
+            <li><a href="/tags.html">Tags</a>
+                                </ul>
+
+        		
+        <h5 class="sidebar-title">Categories</h5>
+        <ul class="side-nav">
+                    <li><a href="/category/python">Python</a></li>
+           
+        </ul>
+        
+        		
+        
+    </aside> <!-- End Sidebar -->
+
+</div> <!-- End Main Content and Sidebar -->
+
+
+<!-- Footer -->
+<footer class="row">
+    <div class="large-12 columns">
+        <hr />
+        <div class="row">
+            <div class="large-6 columns">
+                <p>Jeff Tratner by Jeff Tratner</p>
+            </div>
+            </div>
+    </div>
+</footer>
