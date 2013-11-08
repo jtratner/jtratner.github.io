@@ -5,7 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = u'Jeff Tratner'
 SITENAME = u'Jeff Tratner'
 SITEURL = 'http://www.jeffreytratner.com/blog'
-THEME = 'tuxlite_zf'
+THEME = 'simple'
 
 TIMEZONE = 'Europe/Paris'
 
