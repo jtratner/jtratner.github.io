@@ -20,23 +20,25 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
 # # Blogroll
-LINKS =  (('My main page', 'http://jeffreytratner.com/'),)
+# LINKS =  (('More about', 'http://jeffreytratner.com/'),)
 #           ('Python.org', 'http://python.org/'),
 #           ('Jinja2', 'http://jinja.pocoo.org/'),
 #           ('You can modify those links in your config file', '#'),)
 
 GITHUB_URL = 'https://www.github.com/jtratner'
-GITHUB_USER = 'jtratner'
+# GITHUB_USER = 'jtratner'
 # pelican-bootstrap3 options
-GITHUB_SHOW_USER_LINK=True
-GITHUB_REPO_COUNT=4
-GITHUB_SKIP_FORK=False
+# GITHUB_SHOW_USER_LINK=True
+# GITHUB_REPO_COUNT=2
+# GITHUB_SKIP_FORK=False
 
 BOOTSTRAP_THEME='cosmo'
 
 # # Social widget
-# SOCIAL = (('You can add links in your config file', '#'),
-#           ('Another social link', '#'),)
+SOCIAL = (('More about Jeff', 'http://www.jeffreytratner.com'),
+          ('@jtratner on Github', 'http://www.github.com/jtratner'),
+          ('@jtratner on Twitter', 'http://www.twitter.com/jtratner'),
+         )
 
 DEFAULT_PAGINATION = 10
 
