@@ -26,6 +26,13 @@ LINKS =  (('My main page', 'http://jeffreytratner.com/'),)
 #           ('You can modify those links in your config file', '#'),)
 
 GITHUB_URL = 'https://www.github.com/jtratner'
+GITHUB_USER = 'jtratner'
+# pelican-bootstrap3 options
+GITHUB_SHOW_USER_LINK=True
+GITHUB_REPO_COUNT=4
+GITHUB_SKIP_FORK=False
+
+BOOTSTRAP_THEME='cosmo'
 
 # # Social widget
 # SOCIAL = (('You can add links in your config file', '#'),
