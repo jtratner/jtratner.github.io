@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = u'Jeff Tratner'
 SITENAME = u'Jeff Tratner'
-SITEURL = ''
+SITEURL = 'http://www.jeffreytratner.com/blog'
 THEME = 'tuxlite_zf'
 
 TIMEZONE = 'Europe/Paris'
@@ -20,7 +20,7 @@ CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
 
 # # Blogroll
-# LINKS =  (('Pelican', 'http://getpelican.com/'),
+LINKS =  (('My main page', 'http://jeffreytratner.com/'),)
 #           ('Python.org', 'http://python.org/'),
 #           ('Jinja2', 'http://jinja.pocoo.org/'),
 #           ('You can modify those links in your config file', '#'),)
